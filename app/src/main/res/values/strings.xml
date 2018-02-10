@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">QuakeNWeather</string>
 
-    <string name="title_activity_main">Latest Quakes</string>
+    <string name="title_activity_main">Quakes</string>
     <string name="title_activity_map">View Quakes</string>
     <string name="title_activity_statistics">Quake Statistics</string>
     <string name="title_activity_settings">Settings</string>

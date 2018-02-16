@@ -4,8 +4,8 @@
     android:key="main_screen">
 
     <PreferenceCategory
-        android:key="earthquake_filters"
-        android:title="EARTHQUAKE FILTERS" >
+        android:key="quake_filters"
+        android:title="QUAKE FILTERS" >
         <ListPreference
             android:title="@string/preference_magnitude_label"
             android:key="@string/preference_magnitude_key"

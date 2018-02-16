@@ -17,16 +17,15 @@ import edu.itu.csc.quakenweather.utilities.Utility;
  * About Us fragment containing a simple view.
  *
  * @author "Jigar Gosalia"
- *
  */
 public class AboutUsFragment extends Fragment {
 
-    public AboutUsFragment() {
-    }
+    public AboutUsFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_about_us, container, false);
 
@@ -60,4 +59,5 @@ public class AboutUsFragment extends Fragment {
         }
         return rootView;
     }
+
 }

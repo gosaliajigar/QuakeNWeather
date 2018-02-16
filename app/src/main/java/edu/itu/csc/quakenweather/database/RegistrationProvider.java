@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 /**
  * RegistrationProvider for registration details.
  *
- *
  * @author "Jigar Gosalia"
  */
 public class RegistrationProvider extends ContentProvider {

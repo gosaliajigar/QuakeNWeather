@@ -93,6 +93,7 @@
     <string name="details_review_status">Review Status:</string>
     <string name="details_more_details">More Details:</string>
 
+    <string name="weather_button_text">Get 7 Days Weather</string>
     <string name="statistics_today">Quakes Today</string>
     <string name="statistics_this_week">This Week</string>
     <string name="statistics_this_month">This Month</string>

@@ -5,15 +5,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-
 import edu.itu.csc.quakenweather.R;
 
 /**
- *
  * About Us Activity
  *
  * @author "Jigar Gosalia"
- *
  */
 public class AboutUsActivity extends AppCompatActivity {
 

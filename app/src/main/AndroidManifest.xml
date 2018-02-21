@@ -29,9 +29,22 @@
             android:label="@string/title_activity_details"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.QuakeStatisticsActivity"
+            android:label="@string/title_activity_statistics"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.AboutUsActivity"
             android:label="@string/title_activity_about"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.itu.csc.quakenweather.activities.MainActivity" />
+        </activity>
         <provider
             android:name=".database.RegistrationProvider"
             android:authorities="edu.itu.csc.quakenweather"></provider>

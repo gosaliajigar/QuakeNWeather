@@ -32,6 +32,7 @@ import java.util.List;
 import edu.itu.csc.quakenweather.R;
 import edu.itu.csc.quakenweather.adapters.QuakeAdapter;
 import edu.itu.csc.quakenweather.models.Quake;
+import edu.itu.csc.quakenweather.settings.SettingsActivity;
 import edu.itu.csc.quakenweather.utilities.Utility;
 
 /**
@@ -134,8 +135,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_map:
                 break;
             case R.id.action_statistics:
+                startActivity(new Intent(MainActivity.this, QuakeStatisticsActivity.class));
                 break;
             case R.id.action_settings:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
             case R.id.action_search:
                 break;
@@ -153,7 +156,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_about) {
             startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
         } else if (id == R.id.nav_manage) {
-            // startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");

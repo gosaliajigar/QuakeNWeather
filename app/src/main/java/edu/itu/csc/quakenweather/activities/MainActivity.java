@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_refresh:
                 break;
             case R.id.action_map:
+                startActivity(new Intent(MainActivity.this, QuakeMapActivity.class));
                 break;
             case R.id.action_statistics:
                 startActivity(new Intent(MainActivity.this, QuakeStatisticsActivity.class));
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
             Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", getString(R.string.email_address), null));
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " : Feedback (" + formatter.format(new Date()) + ")");
-            intent.putExtra(Intent.EXTRA_TEXT, "[Type your message here]");
+            intent.putExtra(Intent.EXTRA_TEXT, "[Type your message here]" + Utility.getDeviceInformation(getApplicationContext()));
             startActivity(Intent.createChooser(intent, "Choose an Email client : "));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -25,6 +25,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.QuakeMapActivity"
+            android:label="@string/title_activity_map"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.QuakeDetailsActivity"
             android:label="@string/title_activity_details"
             android:screenOrientation="portrait" />
@@ -48,6 +52,9 @@
         <provider
             android:name=".database.RegistrationProvider"
             android:authorities="edu.itu.csc.quakenweather"></provider>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR-API-KEY" />
     </application>
 
 </manifest>

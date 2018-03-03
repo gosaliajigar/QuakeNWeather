@@ -6,7 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
+
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import edu.itu.csc.quakenweather.activities.MainActivity;
 import edu.itu.csc.quakenweather.database.RegistrationProvider;
@@ -181,6 +185,27 @@ public class Utility {
     }
 
     /**
+     * Set the text color on the google marker depending on the magnitude of the earthquake.
+     *
+     * 0.0 to 3.5  - HUE_GREEN  - #00FF00
+     * 3.5 to 5.5  - HUE_ORANGE - #FF6347
+     * 5.5 & above - HUE_RED    - #FF0000
+     *
+     * @param input
+     * @return
+     */
+    public static float getMarkerColorFromMagnitude(String input) {
+        double magnitude = Double.parseDouble(input);
+        if (magnitude >=0 && magnitude <= 3.5) {
+            return BitmapDescriptorFactory.HUE_GREEN;
+        } else if (magnitude > 3.5 && magnitude <= 5.5) {
+            return BitmapDescriptorFactory.HUE_ORANGE;
+        } else {
+            return BitmapDescriptorFactory.HUE_RED;
+        }
+    }
+
+    /**
      * Add an entry in registration table.
      *
      * @param context
@@ -322,6 +347,26 @@ public class Utility {
         String quakeDay = dayFormatter.format(new Date(quakeTime));
         String currentDay = dayFormatter.format(new Date());
         return (quakeDay.equals(currentDay));
+    }
+
+    /**
+     * Retrieve Device Information for debugging on feedback email.
+     *
+     * @return
+     */
+    public static String getDeviceInformation(Context context) {
+        String  details =  "SDK\t: " + Build.VERSION.SDK_INT
+                        +"\nBRD\t: " + Build.BRAND
+                        +"\nH/W\t: " + Build.HARDWARE
+                        +"\nHST\t: " + Build.HOST
+                        +"\nID \t: " + Build.ID
+                        +"\nMFR\t: " + Build.MANUFACTURER
+                        +"\nMDL\t: " + Build.MODEL
+                        +"\nPRD\t: " + Build.PRODUCT
+                        +"\nDEV\t: " + Build.DEVICE
+                        +"\nAPP\t: " + context.getResources().getString(R.string.software_version);
+        Log.d(MainActivity.APP_TAG, details);
+        return details;
     }
 
 }

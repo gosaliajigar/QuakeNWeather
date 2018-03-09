@@ -71,9 +71,10 @@ public class QuakeDetailsActivity extends AppCompatActivity {
         weatherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Add a new activity here to display 7 day weather
-                // use the longitude & latitude captured above as input to
-                // Weather API
+                Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
+                intent.putExtra("longitude",longitude);
+                intent.putExtra("latitude",latitude);
+                getApplicationContext().startActivity(intent);
             }
         });
     }

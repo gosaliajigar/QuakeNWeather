@@ -99,4 +99,9 @@
     <string name="statistics_this_month">This Month</string>
     <string name="title_activity_about_us">AboutUsActivity</string>
     <string name="title_activity_weather">Weather</string>
+    <string name="preference_temperature_celsius">Celsius</string>
+    <string name="preference_temperature_fahrenheit">Fahrenheit</string>
+    <string name="preference_temperature_key">temperature</string>
+    <string name="temperature_units">Temperature Units</string>
+
 </resources>

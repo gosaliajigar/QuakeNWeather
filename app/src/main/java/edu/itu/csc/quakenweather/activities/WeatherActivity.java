@@ -3,8 +3,10 @@ package edu.itu.csc.quakenweather.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
@@ -27,7 +29,7 @@ import edu.itu.csc.quakenweather.adapters.WeatherAdapter;
 import edu.itu.csc.quakenweather.models.Weather;
 
 /**
- * Created by Andrii on 2/9/2018.
+ * Created by Andrii Stasenko on 2/9/2018.
  */
 
 public class WeatherActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -72,7 +74,23 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
 
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
-            String urlPath = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=37.387647699999995&lon=-122.03019289999997&cnt=7&appid=ecbeaa84b6d265f4f7e442cb44543c42";
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            String temperature_format = prefs.getString(context.getString(R.string.preference_temperature_key), null);
+
+            StringBuilder futureURL = new StringBuilder();
+            futureURL.append("http://api.openweathermap.org/data/2.5/forecast/daily?lat=");
+            futureURL.append(latitude);
+            futureURL.append("&lon=");
+            futureURL.append(longitude);
+            futureURL.append("&cnt=7&appid=");
+            futureURL.append("");
+            futureURL.append("&units=");
+            if(temperature_format.equals("Celsius")){
+                futureURL.append("metric");
+            }else{
+                futureURL.append("imperial");
+            }
+            String urlPath = futureURL.toString();
             String weatherResponse = null;
             ArrayList<Weather> weekWeather = new ArrayList<Weather>();
 

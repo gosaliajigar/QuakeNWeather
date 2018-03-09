@@ -51,4 +51,8 @@
         <item>@string/preference_distance_miles</item>
         <item>@string/preference_distance_kilometers</item>
     </string-array>
+    <string-array name="preference_temperature_format_values">
+        <item>@string/preference_temperature_celsius</item>
+        <item>@string/preference_temperature_fahrenheit</item>
+    </string-array>
 </resources>

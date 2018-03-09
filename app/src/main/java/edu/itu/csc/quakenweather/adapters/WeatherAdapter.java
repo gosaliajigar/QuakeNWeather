@@ -2,8 +2,6 @@ package edu.itu.csc.quakenweather.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,13 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import edu.itu.csc.quakenweather.R;
 import edu.itu.csc.quakenweather.models.Weather;
 
 /**
- * Created by Andrii on 3/7/2018.
+ * Created by Andrii Stasenko on 3/7/2018.
  */
 
 public class WeatherAdapter extends ArrayAdapter<Weather> {
@@ -49,17 +49,13 @@ public class WeatherAdapter extends ArrayAdapter<Weather> {
         ImageView weatherImage = (ImageView) row.findViewById(R.id.weather_image);
         row.setTag("weather");
 
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        //String distance = prefs.getString(context.getString(R.string.preference_distance_key), null);
-
         Weather weather = data.get(position);
-        date.setText(Integer.toString(weather.getDate()));
-        weatherDescription.setText(weather.getWeather());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMM d");
+        date.setText(dateFormat.format(new Date((long) weather.getDate() * 1000)).toString());
+        weatherDescription.setText(weather.getWeather().substring(0, 1).toUpperCase() + weather.getWeather().substring(1));
         dayTemperature.setText(Double.toString(weather.getDayTemperature()) + "\u00b0");
         nightTemperature.setText(Double.toString(weather.getNightTemperature()) + "\u00b0");
-        //weatherImage.set
-        //holder.magnitudeTextView.setTextColor(Utility.getTextColorFromMagnitude(quake.getMagnitude()));
-        //String depth = Utility.getFormattedDepth(Utility.getConvertedDepth(quake.getDepth(), distance), distance);
+
         return row;
     }
 }

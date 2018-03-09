@@ -32,6 +32,7 @@ public class SettingsActivity extends PreferenceActivity
         bindPreferenceSummaryToValue(findPreference(getString(R.string.preference_magnitude_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.preference_duration_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.preference_distance_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.preference_temperature_key)));
     }
 
     /**

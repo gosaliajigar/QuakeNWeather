@@ -31,4 +31,19 @@
             android:entries="@array/preference_distance_options" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="debugging_data"
+        android:title="DEBUGGING DATA" >
+        <CheckBoxPreference
+            android:title="@string/preference_device_information_label"
+            android:key="@string/preference_device_information_key"
+            android:summary="Uncheck if you do not want to share data"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:title="@string/preference_error_information_label"
+            android:key="@string/preference_error_information_key"
+            android:summary="Uncheck if you do not want to share data"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
 </PreferenceScreen>

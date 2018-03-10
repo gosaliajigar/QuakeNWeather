@@ -136,7 +136,7 @@ public class QuakeStatisticsActivity extends AppCompatActivity {
 
         @Override
         protected Map<String, Integer> doInBackground(Void... voids) {
-            return getCounts();
+            return getCounts(context);
         }
 
         @Override
@@ -171,16 +171,16 @@ public class QuakeStatisticsActivity extends AppCompatActivity {
          *
          * @return
          */
-        private Map<String, Integer> getCounts() {
+        private Map<String, Integer> getCounts(Context context) {
             boolean error = false;
             Map<String, Integer> results = new HashMap<String, Integer>();
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String magnitude = prefs.getString(context.getString(R.string.preference_magnitude_key), null);
             String duration = prefs.getString(context.getString(R.string.preference_duration_key), null);
             String distance = prefs.getString(context.getString(R.string.preference_distance_key), null);
-            List<Quake> today = Utility.getQuakeData("QuakeStatisticsActivity - today", Utility.urlType.get("today"), magnitude, duration, distance);
-            List<Quake> weekly = Utility.getQuakeData("QuakeStatisticsActivity - weekly", Utility.urlType.get("thisweek"), magnitude, duration, distance);
-            List<Quake> monthly = Utility.getQuakeData("QuakeStatisticsActivity - monthly", Utility.urlType.get("thismonth"), magnitude, duration, distance);
+            List<Quake> today = Utility.getQuakeData("QuakeStatisticsActivity - today", Utility.urlType.get("today"), magnitude, duration, distance, context);
+            List<Quake> weekly = Utility.getQuakeData("QuakeStatisticsActivity - weekly", Utility.urlType.get("thisweek"), magnitude, duration, distance, context);
+            List<Quake> monthly = Utility.getQuakeData("QuakeStatisticsActivity - monthly", Utility.urlType.get("thismonth"), magnitude, duration, distance, context);
             if (today != null) {
                 results.put("today", today.size());
             } else {

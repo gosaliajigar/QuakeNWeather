@@ -29,12 +29,17 @@
             android:label="@string/title_activity_map"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.QuakeDetailsActivity"
-            android:label="@string/title_activity_details"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.QuakeStatisticsActivity"
             android:label="@string/title_activity_statistics"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.QuakeSearchActivity"
+            android:label="@string/title_activity_search"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.QuakeDetailsActivity"
+            android:label="@string/title_activity_details"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AboutUsActivity"
@@ -51,7 +56,10 @@
         </activity>
         <provider
             android:name=".database.RegistrationProvider"
-            android:authorities="edu.itu.csc.quakenweather"></provider>
+            android:authorities="edu.itu.csc.quakenweather.registration"></provider>
+        <provider
+            android:name=".database.ErrorProvider"
+            android:authorities="edu.itu.csc.quakenweather.error"></provider>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR-API-KEY" />

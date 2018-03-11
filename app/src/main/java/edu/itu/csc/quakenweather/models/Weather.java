@@ -1,5 +1,7 @@
 package edu.itu.csc.quakenweather.models;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Andrii Stasenko on 3/4/2018.
  */
@@ -11,15 +13,15 @@ public class Weather {
     private double dayTemperature;
     private double nightTemperature;
     private String weather;
-    private String iconId;
+    private Bitmap icon;
 
-    public Weather(String city, int date, double dayTemperature, double nightTemperature, String weather, String iconId) {
+    public Weather(String city, int date, double dayTemperature, double nightTemperature, String weather, Bitmap icon) {
         this.city = city;
         this.date = date;
         this.dayTemperature = dayTemperature;
         this.nightTemperature = nightTemperature;
         this.weather = weather;
-        this.iconId = iconId;
+        this.icon = icon;
     }
 
     public String getCity() {
@@ -62,12 +64,12 @@ public class Weather {
         this.weather = weather;
     }
 
-    public String getIconId() {
-        return iconId;
+    public Bitmap getIcon() {
+        return icon;
     }
 
-    public void setIconId(String iconId) {
-        this.iconId = iconId;
+    public void setIconId(Bitmap icon) {
+        this.icon = icon;
     }
 
     @Override
@@ -78,7 +80,7 @@ public class Weather {
                 ", dayTemperature=" + dayTemperature +
                 ", nightTemperature=" + nightTemperature +
                 ", weather='" + weather + '\'' +
-                ", iconId='" + iconId + '\'' +
+                ", icon='" + icon + '\'' +
                 '}';
     }
 }

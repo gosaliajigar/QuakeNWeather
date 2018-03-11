@@ -55,6 +55,7 @@ public class WeatherAdapter extends ArrayAdapter<Weather> {
         weatherDescription.setText(weather.getWeather().substring(0, 1).toUpperCase() + weather.getWeather().substring(1));
         dayTemperature.setText(Double.toString(weather.getDayTemperature()) + "\u00b0");
         nightTemperature.setText(Double.toString(weather.getNightTemperature()) + "\u00b0");
+        weatherImage.setImageBitmap(weather.getIcon());
 
         return row;
     }

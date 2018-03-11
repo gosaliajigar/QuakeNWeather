@@ -4,6 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -27,6 +32,7 @@ import java.util.ArrayList;
 import edu.itu.csc.quakenweather.R;
 import edu.itu.csc.quakenweather.adapters.WeatherAdapter;
 import edu.itu.csc.quakenweather.models.Weather;
+import edu.itu.csc.quakenweather.utilities.Utility;
 
 /**
  * Created by Andrii Stasenko on 2/9/2018.
@@ -42,7 +48,8 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
 
-        setTitle(getString(R.string.title_activity_weather));
+        setTitle(R.string.title_activity_weather);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#228B22")));
 
         Intent intent = getIntent();
         longitude = intent.getDoubleExtra("longitude", 0.0);
@@ -77,13 +84,22 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String temperature_format = prefs.getString(context.getString(R.string.preference_temperature_key), null);
 
+            ApplicationInfo applicationInfo = null;
+            try {
+                applicationInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            Bundle bundle = applicationInfo.metaData;
+            String appID = bundle.getString("org.openweathermap.APP_ID");
+
             StringBuilder futureURL = new StringBuilder();
             futureURL.append("http://api.openweathermap.org/data/2.5/forecast/daily?lat=");
             futureURL.append(latitude);
             futureURL.append("&lon=");
             futureURL.append(longitude);
             futureURL.append("&cnt=7&appid=");
-            futureURL.append("");
+            futureURL.append(appID);
             futureURL.append("&units=");
             if(temperature_format.equals("Celsius")){
                 futureURL.append("metric");
@@ -134,7 +150,13 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
                     JSONObject city = allWeather.getJSONObject("city");
                     String cityName = city.getString("name");
 
-                    Weather weather = new Weather(cityName, date, dayTemperature, nightTemperature, weatherDescription, iconId);
+                    StringBuilder iconUrl = new StringBuilder();
+                    iconUrl.append("http://openweathermap.org/img/w/");
+                    iconUrl.append(iconId);
+                    iconUrl.append(".png");
+                    Bitmap icon = Utility.getBitmapFromURL(iconUrl.toString());
+
+                    Weather weather = new Weather(cityName, date, dayTemperature, nightTemperature, weatherDescription, icon);
                     weekWeather.add(weather);
                 }
 

@@ -41,18 +41,19 @@
             android:key="@string/preference_temperature_key"
             android:title="@string/temperature_units" />
     </PreferenceCategory>
+    <PreferenceCategory
         android:key="debugging_data"
-        android:title="DEBUGGING DATA" >
+        android:title="DEBUGGING DATA">
         <CheckBoxPreference
-            android:title="@string/preference_device_information_label"
+            android:defaultValue="true"
             android:key="@string/preference_device_information_key"
             android:summary="Uncheck if you do not want to share data"
-            android:defaultValue="true"/>
+            android:title="@string/preference_device_information_label" />
         <CheckBoxPreference
-            android:title="@string/preference_error_information_label"
+            android:defaultValue="true"
             android:key="@string/preference_error_information_key"
             android:summary="Uncheck if you do not want to share data"
-            android:defaultValue="true"/>
+            android:title="@string/preference_error_information_label" />
     </PreferenceCategory>
 
 </PreferenceScreen>

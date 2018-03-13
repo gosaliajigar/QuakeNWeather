@@ -10,34 +10,33 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * RegistrationProvider for registration details.
+ * ErrorProvider for error details.
  *
  * @author "Jigar Gosalia"
  */
-public class RegistrationProvider extends ContentProvider {
+public class ErrorProvider extends ContentProvider {
 
-    private static final String PROVIDER_NAME = "edu.itu.csc.quakenweather.registration";
-    private static final String URL = "content://" + PROVIDER_NAME + "/registration";
+    private static final String PROVIDER_NAME = "edu.itu.csc.quakenweather.error";
+    private static final String URL = "content://" + PROVIDER_NAME + "/error";
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
     public static final String _ID = "_id";
-    public static final String APP_NAME = "app_name";
-    public static final String INSTALL_DATE = "install_date";
+    public static final String ERROR_DETAILS = "error_details";
     public static final String LAST_DATE = "last_date";
 
-    private RegistrationDataHelper registrationDataHelper = null;
+    private ErrorDataHelper errorDataHelper = null;
 
     @Override
     public boolean onCreate() {
         Context context = getContext();
-        registrationDataHelper = new RegistrationDataHelper(context);
+        errorDataHelper = new ErrorDataHelper(context);
         return true;
     }
 
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        Cursor cursor = registrationDataHelper.getEntry(uri.getPathSegments().get(1), null, null, null, null);
+        Cursor cursor = errorDataHelper.getEntry(null, null, null, null, null);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
@@ -52,7 +51,7 @@ public class RegistrationProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         Uri result = null;
-        long _id = registrationDataHelper.addEntry(contentValues);
+        long _id = errorDataHelper.addEntry(contentValues);
         if ( _id > 0 )
             result = ContentUris.withAppendedId(CONTENT_URI, _id);
         else
@@ -64,7 +63,7 @@ public class RegistrationProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
         String id = uri.getPathSegments().get(1);
-        int result = registrationDataHelper.deleteEntry(id);
+        int result = errorDataHelper.deleteEntry(id);
         getContext().getContentResolver().notifyChange(uri, null);
         return result;
     }
@@ -72,7 +71,7 @@ public class RegistrationProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
         String id = id = uri.getPathSegments().get(1);
-        int result = registrationDataHelper.updateEntry(id, contentValues);
+        int result = errorDataHelper.updateEntry(id, contentValues);
         getContext().getContentResolver().notifyChange(uri, null);
         return result;
     }

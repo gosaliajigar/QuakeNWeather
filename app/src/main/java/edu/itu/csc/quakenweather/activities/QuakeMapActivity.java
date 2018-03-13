@@ -125,14 +125,11 @@ public class QuakeMapActivity extends AppCompatActivity {
         @Override
         protected List<Quake> doInBackground(String... data) {
             String url = Utility.urlType.get("today");
-            String magnitude = "3.0";
-            String duration = "last24hr";
-            String distance = "miles";
             if (data != null
                     && data.length > 2) {
-                return Utility.getQuakeData("MapActivity", Utility.urlType.get(data[1]), data[0], data[1], data[2]);
+                return Utility.getQuakeData("MapActivity", Utility.urlType.get(data[1]), data[0], data[1], data[2], context);
             }
-            return Utility.getQuakeData("MapActivity", url, magnitude, duration, distance);
+            return Utility.getQuakeData("MapActivity", url, Utility.DEFAULT_MAGNITUDE, Utility.DEFAULT_DURATION, Utility.DEFAULT_DISTANCE, context);
         }
 
         @Override
@@ -251,10 +248,10 @@ public class QuakeMapActivity extends AppCompatActivity {
      * @param mMapView
      */
     private void drawMap(Context context, MapView mMapView) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String magnitude = prefs.getString(context.getString(R.string.preference_magnitude_key), null);
-        String duration = prefs.getString(context.getString(R.string.preference_duration_key), null);
-        String distance = prefs.getString(context.getString(R.string.preference_distance_key), null);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String magnitude = preferences.getString(context.getString(R.string.preference_magnitude_key), null);
+        String duration = preferences.getString(context.getString(R.string.preference_duration_key), null);
+        String distance = preferences.getString(context.getString(R.string.preference_distance_key), null);
         new FetchQuakeMapDataTask(context, mMapView).execute(magnitude, duration, distance);
     }
 }

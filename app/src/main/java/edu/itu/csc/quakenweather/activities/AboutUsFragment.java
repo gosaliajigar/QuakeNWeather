@@ -29,7 +29,7 @@ public class AboutUsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_about_us, container, false);
 
-        Map<String, String> map = Utility.getEntry(getContext());
+        Map<String, String> map = Utility.getRegistrationEntry(getContext());
         TextView installText = (TextView)rootView.findViewById(R.id.install_text);
         TextView installDate = (TextView)rootView.findViewById(R.id.install_data);
         TextView lastViewText = (TextView)rootView.findViewById(R.id.last_text);

@@ -1,12 +1,13 @@
 package edu.itu.csc.quakenweather.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+        Utility.addErrorEntry(this, new Exception("DEMO PURPOSE ERROR"));
     }
 
     @Override
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.action_refresh:
+                fetchLatestQuakes(this);
                 break;
             case R.id.action_map:
                 startActivity(new Intent(MainActivity.this, QuakeMapActivity.class));
@@ -142,6 +145,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
             case R.id.action_search:
+                startActivity(new Intent(MainActivity.this, QuakeSearchActivity.class));
                 break;
             default:
                 Toast.makeText(this, "No Such Action Supported!", Toast.LENGTH_LONG).show();
@@ -165,10 +169,14 @@ public class MainActivity extends AppCompatActivity
             sharingIntent.putExtra(Intent.EXTRA_TEXT, "[Type your message here]");
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
         } else if (id == R.id.nav_feedback) {
+            Toast.makeText(getApplicationContext(), "For data sharing permissions check Settings", Toast.LENGTH_LONG).show();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            boolean canShareDeviceInformation = prefs.getBoolean(getResources().getString(R.string.preference_device_information_key), true);
+            boolean canShareErrorInformation = prefs.getBoolean(getResources().getString(R.string.preference_error_information_key), true);
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
             Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", getString(R.string.email_address), null));
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " : Feedback (" + formatter.format(new Date()) + ")");
-            intent.putExtra(Intent.EXTRA_TEXT, "[Type your message here]" + Utility.getDeviceInformation(getApplicationContext()));
+            intent.putExtra(Intent.EXTRA_TEXT, "[Type your message here]" + Utility.getDebuggingInformation(getApplicationContext(), canShareDeviceInformation, canShareErrorInformation));
             startActivity(Intent.createChooser(intent, "Choose an Email client : "));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -233,14 +241,11 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected List<Quake> doInBackground(String... data) {
             String url = Utility.urlType.get("today");
-            String magnitude = "3.0";
-            String duration = "last24hr";
-            String distance = "miles";
             if (data != null
                     && data.length > 2) {
-                return Utility.getQuakeData("MainActivity", Utility.urlType.get(data[1]), data[0], data[1], data[2]);
+                return Utility.getQuakeData("MainActivity", Utility.urlType.get(data[1]), data[0], data[1], data[2], context);
             }
-            return Utility.getQuakeData("MainActivity", url, magnitude, duration, distance);
+            return Utility.getQuakeData("MainActivity", url, Utility.DEFAULT_MAGNITUDE, Utility.DEFAULT_DURATION, Utility.DEFAULT_DISTANCE, context);
         }
 
         @Override

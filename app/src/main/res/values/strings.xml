@@ -63,6 +63,11 @@
     <string name="preference_distance_miles">miles</string>
     <string name="preference_distance_kilometers">kilometers</string>
 
+    <string name="preference_device_information_key">device</string>
+    <string name="preference_device_information_label">Device Information</string>
+    <string name="preference_error_information_key">error</string>
+    <string name="preference_error_information_label">Error Information</string>
+
     <string name="link">&lt;a href="HREF">View on USGS Website&lt;/a></string>
     <string name="name1">Andrii Stasenko (92409)</string>
     <string name="name2">Jigar Rajnikant Gosalia (89753)</string>

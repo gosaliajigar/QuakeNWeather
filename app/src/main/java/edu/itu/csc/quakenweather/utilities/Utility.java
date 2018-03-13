@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.database.DatabaseUtils;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
@@ -26,13 +27,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.ResourceBundle;
 
 import edu.itu.csc.quakenweather.activities.MainActivity;
+import edu.itu.csc.quakenweather.database.ErrorProvider;
 import edu.itu.csc.quakenweather.database.RegistrationProvider;
 
 import edu.itu.csc.quakenweather.R;
@@ -45,7 +50,13 @@ import edu.itu.csc.quakenweather.models.Quake;
  */
 public class Utility {
 
-    public static SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd yyyy KK:mm a");
+    public static final String DEFAULT_MAGNITUDE = "3.0";
+
+    public static final String DEFAULT_DURATION = "last24hr";
+
+    public static final String DEFAULT_DISTANCE = "miles";
+
+    public static final SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd yyyy KK:mm a");
 
     public static final Map<String, String> urlType = new HashMap<String, String>();
 
@@ -152,6 +163,27 @@ public class Utility {
         return builder.toString();
     }
 
+
+    /**
+     * Get date time for feedback email.
+     *
+     * @param unixTime
+     * @return
+     * @throws Exception
+     */
+    public static String getDateTimeForFeedback(long unixTime) throws Exception {
+        StringBuilder builder = new StringBuilder();
+        Date quakeTime = new Date((long) unixTime);
+        SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        if (quakeTime != null) {
+            String quakeTimeS = dateTimeFormatter.format(quakeTime);
+            if (quakeTimeS != null) {
+                builder.append(quakeTimeS);
+            }
+        }
+        return builder.toString();
+    }
+
     /**
      * Update the last viewed time in database for About screen.
      *
@@ -159,12 +191,12 @@ public class Utility {
      * @param context
      */
     public static void updateLastViewed(String caller, Context context) {
-        Map<String, String> map = Utility.getEntry(context);
+        Map<String, String> map = Utility.getRegistrationEntry(context);
         Log.d(MainActivity.APP_TAG, caller + " Time: " + (new Date()));
         if (map != null && map.size() > 0) {
-            Utility.updateEntry(context);
+            Utility.updateRegistrationEntry(context);
         } else {
-            Utility.addEntry(context);
+            Utility.addRegistrationEntry(context);
         }
     }
 
@@ -215,13 +247,13 @@ public class Utility {
      *
      * @param context
      */
-    public static void addEntry(Context context) {
+    public static void addRegistrationEntry(Context context) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(RegistrationProvider.APP_NAME , context.getString(R.string.app_name));
         contentValues.put(RegistrationProvider.INSTALL_DATE , String.valueOf(new Date().getTime()));
         contentValues.put(RegistrationProvider.LAST_DATE , String.valueOf(new Date().getTime()));
         Uri uri = context.getContentResolver().insert(RegistrationProvider.CONTENT_URI, contentValues);
-        Log.d(MainActivity.APP_TAG, "Utility: Added uri: " + uri.toString());
+        Log.d(MainActivity.APP_TAG, "Utility: Added registration uri: " + uri.toString());
     }
 
     /**
@@ -230,7 +262,7 @@ public class Utility {
      * @param context
      * @return
      */
-    public static Map<String, String> getEntry(Context context) {
+    public static Map<String, String> getRegistrationEntry(Context context) {
         Map<String, String> map = new HashMap<String, String>();
         Cursor cursor = context.getContentResolver().query(ContentUris.withAppendedId(RegistrationProvider.CONTENT_URI, Long.valueOf(1)), null, null, null, null);
         if (cursor != null
@@ -238,7 +270,7 @@ public class Utility {
             map.put(RegistrationProvider.INSTALL_DATE, cursor.getString(cursor.getColumnIndex(RegistrationProvider.INSTALL_DATE)));
             map.put(RegistrationProvider.LAST_DATE, cursor.getString(cursor.getColumnIndex(RegistrationProvider.LAST_DATE)));
         }
-        Log.d(MainActivity.APP_TAG, "Utility: Get Entries: " + map);
+        Log.d(MainActivity.APP_TAG, "Utility: Get Registration Entries: " + map);
         return map;
     }
 
@@ -247,12 +279,43 @@ public class Utility {
      *
      * @param context
      */
-    public static void updateEntry(Context context) {
+    public static void updateRegistrationEntry(Context context) {
         long timestamp = new Date().getTime();
         ContentValues contentValues = new ContentValues();
         contentValues.put(RegistrationProvider.LAST_DATE , String.valueOf(timestamp));
         int result = context.getContentResolver().update(ContentUris.withAppendedId(RegistrationProvider.CONTENT_URI, Long.valueOf(1)), contentValues, null, null);
-        Log.d(MainActivity.APP_TAG, "Utility: Updated: " + result + " time: " + Utility.getFormattedDate(Utility.formatter, String.valueOf(timestamp)));
+        Log.d(MainActivity.APP_TAG, "Utility: Updated registration: " + result + " time: " + Utility.getFormattedDate(Utility.formatter, String.valueOf(timestamp)));
+    }
+
+    /**
+     * Add an entry in error table.
+     *
+     * @param context
+     */
+    public static void addErrorEntry(Context context, Exception exception) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ErrorProvider.ERROR_DETAILS , Log.getStackTraceString(exception));
+        contentValues.put(ErrorProvider.LAST_DATE , String.valueOf(new Date().getTime()));
+        Uri uri = context.getContentResolver().insert(ErrorProvider.CONTENT_URI, contentValues);
+        Log.d(MainActivity.APP_TAG, "Utility: Added error uri: " + uri.toString());
+    }
+
+    /**
+     * Get entries from error tables.
+     *
+     * @param context
+     * @return
+     */
+    public static Map<String, String> getErrorEntry(Context context) {
+        Map<String, String> map = new TreeMap<>(Collections.reverseOrder());
+        Cursor cursor = context.getContentResolver().query(ErrorProvider.CONTENT_URI, null, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                map.put(cursor.getString(cursor.getColumnIndex(ErrorProvider.LAST_DATE)), cursor.getString(cursor.getColumnIndex(ErrorProvider.ERROR_DETAILS)));
+            }
+        }
+        Log.d(MainActivity.APP_TAG, "Utility: Get Error Entries: " + map.size());
+        return map;
     }
 
     /**
@@ -265,7 +328,7 @@ public class Utility {
      * @param distance
      * @return
      */
-    public static List<Quake> getQuakeData(String caller, String urlPath, String magnitude, String duration, String distance) {
+    public static List<Quake> getQuakeData(String caller, String urlPath, String magnitude, String duration, String distance, Context context) {
         List<Quake> quakeList = new ArrayList<Quake>();
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -332,11 +395,12 @@ public class Utility {
         } catch (Exception exception) {
             quakeList = null;
             Log.e(MainActivity.APP_TAG, "Utility: getQuakeData Exception: " + exception.toString());
+            addErrorEntry(context, exception);
             exception.printStackTrace();
         } finally {
             urlConnection.disconnect();
         }
-        Log.d(MainActivity.APP_TAG, caller + " : count=" + ((quakeList != null) ? quakeList.size() : null));
+        Log.d(MainActivity.APP_TAG, caller + " : Quake Count=" + ((quakeList != null) ? quakeList.size() : null));
         return quakeList;
     }
 
@@ -359,19 +423,72 @@ public class Utility {
      *
      * @return
      */
+    public static String getDebuggingInformation(Context context, boolean deviceInformation, boolean errorInformation) {
+        StringBuilder debuggingDetails = new StringBuilder();
+        if (deviceInformation || errorInformation) {
+            debuggingDetails.append("\n\n--------\n\n");
+            debuggingDetails.append("FOR DEBUGGING PURPOSE ONLY\n\n");
+            if (deviceInformation) {
+                debuggingDetails.append(getDeviceInformation(context));
+            }
+            if (errorInformation) {
+                debuggingDetails.append(getErrorInformation(context));
+            }
+        }
+        Log.d(MainActivity.APP_TAG, "Debugging Information: " + debuggingDetails.toString());
+        return debuggingDetails.toString();
+    }
+
+    /**
+     * Retrieve Device Information for debugging on feedback email.
+     *
+     * @return
+     */
     public static String getDeviceInformation(Context context) {
-        String  details =  "SDK\t: " + Build.VERSION.SDK_INT
-                        +"\nBRD\t: " + Build.BRAND
-                        +"\nH/W\t: " + Build.HARDWARE
-                        +"\nHST\t: " + Build.HOST
-                        +"\nID \t: " + Build.ID
-                        +"\nMFR\t: " + Build.MANUFACTURER
-                        +"\nMDL\t: " + Build.MODEL
-                        +"\nPRD\t: " + Build.PRODUCT
-                        +"\nDEV\t: " + Build.DEVICE
-                        +"\nAPP\t: " + context.getResources().getString(R.string.software_version);
-        Log.d(MainActivity.APP_TAG, details);
+        String details =  "SDK\t: " + Build.VERSION.SDK_INT
+                +"\nBRD\t: " + Build.BRAND
+                +"\nH/W\t: " + Build.HARDWARE
+                +"\nHST\t: " + Build.HOST
+                +"\nID \t: " + Build.ID
+                +"\nMFR\t: " + Build.MANUFACTURER
+                +"\nMDL\t: " + Build.MODEL
+                +"\nPRD\t: " + Build.PRODUCT
+                +"\nDEV\t: " + Build.DEVICE
+                +"\nAPP\t: " + context.getResources().getString(R.string.software_version)
+                +"\n\n\n";
+        Log.d(MainActivity.APP_TAG, "Device Details: " + details);
         return details;
+    }
+
+    /**
+     * Retrieve Error Information for debugging on feedback email.
+     *
+     * @return
+     */
+    public static String getErrorInformation(Context context) {
+        StringBuilder errorDetails = new StringBuilder();
+        Map<String, String> errors = getErrorEntry(context);
+        if (errors != null && !errors.isEmpty()) {
+            int count = 0;
+            for (Map.Entry<String, String> error : errors.entrySet()) {
+                if (count < 2) {
+                    String dateTime = null;
+                    try {
+                        dateTime = getDateTimeForFeedback(Long.parseLong(error.getKey()));
+                    } catch (Exception exception) {
+                        // do nothing
+                    }
+                    if (dateTime == null) {
+                        errorDetails.append(error.getKey() + " || " + error.getValue() + "\n");
+                    } else {
+                        errorDetails.append(dateTime + " || " + error.getValue() + "\n");
+                    }
+                }
+                count++;
+            }
+        }
+        Log.d(MainActivity.APP_TAG, "Error Details: " + errorDetails.toString());
+        return errorDetails.toString();
     }
 
     public static Bitmap getBitmapFromURL(String src) {

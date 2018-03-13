@@ -2,6 +2,8 @@ package edu.itu.csc.quakenweather.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,12 +51,21 @@ public class WeatherAdapter extends ArrayAdapter<Weather> {
         ImageView weatherImage = (ImageView) row.findViewById(R.id.weather_image);
         row.setTag("weather");
 
+        String temperatureUnits;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String temperature_format = prefs.getString(getContext().getString(R.string.preference_temperature_key), null);
+        if (temperature_format.equals("Celsius")) {
+            temperatureUnits = "\u00b0C";
+        } else {
+            temperatureUnits = "\u00b0F";
+        }
+
         Weather weather = data.get(position);
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMM d");
         date.setText(dateFormat.format(new Date((long) weather.getDate() * 1000)).toString());
         weatherDescription.setText(weather.getWeather().substring(0, 1).toUpperCase() + weather.getWeather().substring(1));
-        dayTemperature.setText(Double.toString(weather.getDayTemperature()) + "\u00b0");
-        nightTemperature.setText(Double.toString(weather.getNightTemperature()) + "\u00b0");
+        dayTemperature.setText(Double.toString(weather.getDayTemperature()) + temperatureUnits);
+        nightTemperature.setText(Double.toString(weather.getNightTemperature()) + temperatureUnits);
         weatherImage.setImageBitmap(weather.getIcon());
 
         return row;

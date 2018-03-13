@@ -10,16 +10,26 @@ public class Weather {
 
     private String city;
     private int date;
+    private double morningTemperature;
     private double dayTemperature;
+    private double eveningTemperature;
     private double nightTemperature;
+    private double pressure;
+    private int humidity;
+    private double windSpeed;
     private String weather;
     private Bitmap icon;
 
-    public Weather(String city, int date, double dayTemperature, double nightTemperature, String weather, Bitmap icon) {
+    public Weather(String city, int date, double morningTemperature, double dayTemperature, double eveningTemperature, double nightTemperature, double pressure, int humidity, double windSpeed, String weather, Bitmap icon) {
         this.city = city;
         this.date = date;
+        this.morningTemperature = morningTemperature;
         this.dayTemperature = dayTemperature;
+        this.eveningTemperature = eveningTemperature;
         this.nightTemperature = nightTemperature;
+        this.pressure = pressure;
+        this.humidity = humidity;
+        this.windSpeed = windSpeed;
         this.weather = weather;
         this.icon = icon;
     }
@@ -40,6 +50,14 @@ public class Weather {
         this.date = date;
     }
 
+    public double getMorningTemperature() {
+        return morningTemperature;
+    }
+
+    public void setMorningTemperature(double morningTemperature) {
+        this.morningTemperature = morningTemperature;
+    }
+
     public double getDayTemperature() {
         return dayTemperature;
     }
@@ -48,12 +66,44 @@ public class Weather {
         this.dayTemperature = dayTemperature;
     }
 
+    public double getEveningTemperature() {
+        return eveningTemperature;
+    }
+
+    public void setEveningTemperature(double eveningTemperature) {
+        this.eveningTemperature = eveningTemperature;
+    }
+
     public double getNightTemperature() {
         return nightTemperature;
     }
 
     public void setNightTemperature(double nightTemperature) {
         this.nightTemperature = nightTemperature;
+    }
+
+    public double getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
+    }
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
+    }
+
+    public double getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(double windSpeed) {
+        this.windSpeed = windSpeed;
     }
 
     public String getWeather() {
@@ -68,7 +118,7 @@ public class Weather {
         return icon;
     }
 
-    public void setIconId(Bitmap icon) {
+    public void setIcon(Bitmap icon) {
         this.icon = icon;
     }
 
@@ -77,10 +127,15 @@ public class Weather {
         return "Weather{" +
                 "city='" + city + '\'' +
                 ", date=" + date +
+                ", morningTemperature=" + morningTemperature +
                 ", dayTemperature=" + dayTemperature +
+                ", eveningTemperature=" + eveningTemperature +
                 ", nightTemperature=" + nightTemperature +
+                ", pressure=" + pressure +
+                ", humidity=" + humidity +
+                ", windSpeed=" + windSpeed +
                 ", weather='" + weather + '\'' +
-                ", icon='" + icon + '\'' +
+                ", icon=" + icon +
                 '}';
     }
 }

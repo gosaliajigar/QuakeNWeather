@@ -43,6 +43,9 @@
             android:label="@string/title_activity_about"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.WeatherDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.MainActivity"
@@ -55,6 +58,7 @@
         <provider
             android:name=".database.RegistrationProvider"
             android:authorities="edu.itu.csc.quakenweather"></provider>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR-API-KEY" />

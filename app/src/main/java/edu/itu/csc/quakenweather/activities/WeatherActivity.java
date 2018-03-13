@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -40,6 +43,7 @@ import edu.itu.csc.quakenweather.utilities.Utility;
 
 public class WeatherActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
+    ArrayAdapter<Weather> weatherAdapter;
     private double latitude = 0;
     private double longitude = 0;
 
@@ -55,6 +59,31 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
         longitude = intent.getDoubleExtra("longitude", 0.0);
         latitude = intent.getDoubleExtra("latitude", 0.0);
         new loadLatestWeatherForecast(this).execute();
+
+        ListView listView = (ListView) findViewById(R.id.weather_list);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (weatherAdapter != null
+                        && weatherAdapter.getItem(i) != null) {
+                    Weather weather = weatherAdapter.getItem(i);
+                    Log.d(MainActivity.APP_TAG, "Weather Selected : " + weather);
+                    Intent intent = new Intent(WeatherActivity.this, WeatherDetailsActivity.class);
+                    intent.putExtra("city", weather.getCity());
+                    intent.putExtra("date", Integer.toString(weather.getDate()));
+                    intent.putExtra("morningTemperature", Double.toString(weather.getMorningTemperature()));
+                    intent.putExtra("dayTemperature", Double.toString(weather.getDayTemperature()));
+                    intent.putExtra("eveningTemperature", Double.toString(weather.getEveningTemperature()));
+                    intent.putExtra("nightTemperature", Double.toString(weather.getNightTemperature()));
+                    intent.putExtra("pressure", Double.toString(weather.getPressure()));
+                    intent.putExtra("humidity", Integer.toString(weather.getHumidity()));
+                    intent.putExtra("windSpeed", Double.toString(weather.getWindSpeed()));
+                    intent.putExtra("weather", weather.getWeather());
+                    intent.putExtra("icon", Utility.BitMapToString(weather.getIcon()));
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
 
@@ -101,9 +130,9 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
             futureURL.append("&cnt=7&appid=");
             futureURL.append(appID);
             futureURL.append("&units=");
-            if(temperature_format.equals("Celsius")){
+            if (temperature_format.equals("Celsius")) {
                 futureURL.append("metric");
-            }else{
+            } else {
                 futureURL.append("imperial");
             }
             String urlPath = futureURL.toString();
@@ -141,8 +170,13 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
                     JSONObject oneDayWeather = sevenDaysWeather.getJSONObject(i);
                     int date = oneDayWeather.getInt("dt");
                     JSONObject temperature = oneDayWeather.getJSONObject("temp");
+                    Double morningTemperature = temperature.getDouble("morn");
                     Double dayTemperature = temperature.getDouble("day");
+                    Double eveningTemperature = temperature.getDouble("eve");
                     Double nightTemperature = temperature.getDouble("night");
+                    Double pressure = oneDayWeather.getDouble("pressure");
+                    Integer humidity = oneDayWeather.getInt("humidity");
+                    Double windSpeed = oneDayWeather.getDouble("speed");
                     JSONArray weatherWords = oneDayWeather.getJSONArray("weather");
                     JSONObject weatherFirstObject = weatherWords.getJSONObject(0);
                     String weatherDescription = weatherFirstObject.getString("description");
@@ -156,7 +190,7 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
                     iconUrl.append(".png");
                     Bitmap icon = Utility.getBitmapFromURL(iconUrl.toString());
 
-                    Weather weather = new Weather(cityName, date, dayTemperature, nightTemperature, weatherDescription, icon);
+                    Weather weather = new Weather(cityName, date, morningTemperature, dayTemperature, eveningTemperature, nightTemperature, pressure, humidity, windSpeed, weatherDescription, icon);
                     weekWeather.add(weather);
                 }
 
@@ -176,7 +210,7 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
             }
 
             if (weekWeather != null) {
-                ArrayAdapter<Weather> weatherAdapter = new WeatherAdapter(context, R.layout.list_item_weather, weekWeather);
+                weatherAdapter = new WeatherAdapter(context, R.layout.list_item_weather, weekWeather);
                 ListView listView = (ListView) findViewById(R.id.weather_list);
                 listView.setAdapter(weatherAdapter);
             } else {

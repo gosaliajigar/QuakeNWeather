@@ -15,6 +15,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import edu.itu.csc.quakenweather.R;
 import edu.itu.csc.quakenweather.adapters.WeatherAdapter;
 import edu.itu.csc.quakenweather.models.Weather;
+import edu.itu.csc.quakenweather.settings.SettingsActivity;
 import edu.itu.csc.quakenweather.utilities.Utility;
 
 /**
@@ -43,7 +46,7 @@ import edu.itu.csc.quakenweather.utilities.Utility;
 
 public class WeatherActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    ArrayAdapter<Weather> weatherAdapter;
+    private ArrayAdapter<Weather> weatherAdapter;
     private double latitude = 0;
     private double longitude = 0;
 
@@ -55,10 +58,11 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
         setTitle(R.string.title_activity_weather);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#228B22")));
 
+        PreferenceManager.setDefaultValues(getApplicationContext(), R.xml.preference_general, false);
+
         Intent intent = getIntent();
         longitude = intent.getDoubleExtra("longitude", 0.0);
         latitude = intent.getDoubleExtra("latitude", 0.0);
-        new loadLatestWeatherForecast(this).execute();
 
         ListView listView = (ListView) findViewById(R.id.weather_list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -87,22 +91,51 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_macro, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_settings:
+                startActivity(new Intent(WeatherActivity.this, SettingsActivity.class));
+                break;
+            default:
+                Toast.makeText(this, "No Such Action Supported!", Toast.LENGTH_LONG).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new LoadWeeklyWeatherForecast(this).execute();
+    }
+
     /**
      * AsyncTask to fetch latest quake data from USGS.
      */
-    public class loadLatestWeatherForecast extends AsyncTask<Void, Void, ArrayList<Weather>> {
+    public class LoadWeeklyWeatherForecast extends AsyncTask<Void, Void, ArrayList<Weather>> {
 
         private ProgressDialog dialog;
         private Context context;
 
-        public loadLatestWeatherForecast(Context context) {
+        public LoadWeeklyWeatherForecast(Context context) {
             this.context = context;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(context, "Latest Weather Forecast", "Collecting latest weather forecast data from openweathermap.org ... ", false);
+            dialog = ProgressDialog.show(context, "Latest Weather Forecast", "Collecting latest weather forecast data from Open Weather ... ", false);
         }
 
         @Override
@@ -111,7 +144,7 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            String temperature_format = prefs.getString(context.getString(R.string.preference_temperature_key), null);
+            String temperatureFormat = prefs.getString(context.getString(R.string.preference_temperature_key), null);
 
             ApplicationInfo applicationInfo = null;
             try {
@@ -130,7 +163,7 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
             futureURL.append("&cnt=7&appid=");
             futureURL.append(appID);
             futureURL.append("&units=");
-            if (temperature_format.equals("Celsius")) {
+            if (temperatureFormat.equals("Celsius")) {
                 futureURL.append("metric");
             } else {
                 futureURL.append("imperial");
@@ -145,7 +178,9 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setConnectTimeout(5000);
                 urlConnection.setReadTimeout(5000);
+                Log.d(MainActivity.APP_TAG, "WeatherActivity: Connecting " + url);
                 urlConnection.connect();
+                Log.d(MainActivity.APP_TAG, "WeatherActivity: Received data from " + url);
 
                 // Read the input stream into a String
                 InputStream inputStream = urlConnection.getInputStream();
@@ -156,48 +191,45 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
                 while ((line = reader.readLine()) != null) {
                     stringBuilder.append(line);
                 }
+                Log.d(MainActivity.APP_TAG, "WeatherActivity: JSON String: " + stringBuilder.toString());
                 if (stringBuilder.length() > 0) {
                     weatherResponse = stringBuilder.toString();
+                    JSONObject allWeather = new JSONObject(weatherResponse);
+                    JSONArray sevenDaysWeather = allWeather.getJSONArray("list");
+                    for (int i = 0; i < sevenDaysWeather.length(); i++) {
+                        JSONObject oneDayWeather = sevenDaysWeather.getJSONObject(i);
+                        int date = oneDayWeather.getInt("dt");
+                        JSONObject temperature = oneDayWeather.getJSONObject("temp");
+                        Double morningTemperature = temperature.getDouble("morn");
+                        Double dayTemperature = temperature.getDouble("day");
+                        Double eveningTemperature = temperature.getDouble("eve");
+                        Double nightTemperature = temperature.getDouble("night");
+                        Double pressure = oneDayWeather.getDouble("pressure");
+                        Integer humidity = oneDayWeather.getInt("humidity");
+                        Double windSpeed = oneDayWeather.getDouble("speed");
+                        JSONArray weatherWords = oneDayWeather.getJSONArray("weather");
+                        JSONObject weatherFirstObject = weatherWords.getJSONObject(0);
+                        String weatherDescription = weatherFirstObject.getString("description");
+                        String iconId = weatherFirstObject.getString("icon");
+                        JSONObject city = allWeather.getJSONObject("city");
+                        String cityName = city.getString("name");
+
+                        StringBuilder iconUrl = new StringBuilder();
+                        iconUrl.append("http://openweathermap.org/img/w/");
+                        iconUrl.append(iconId);
+                        iconUrl.append(".png");
+                        Bitmap icon = Utility.getBitmapFromURL(iconUrl.toString());
+
+                        Weather weather = new Weather(cityName, date, morningTemperature, dayTemperature, eveningTemperature, nightTemperature, pressure, humidity, windSpeed, weatherDescription, icon);
+                        weekWeather.add(weather);
+                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception exception) {
+                weekWeather = null;
+                Log.e(MainActivity.APP_TAG, "WeatherActivity: getQuakeData Exception: " + exception.toString());
+                Utility.addErrorEntry(context, exception);
+                exception.printStackTrace();
             }
-
-            try {
-                JSONObject allWeather = new JSONObject(weatherResponse);
-                JSONArray sevenDaysWeather = allWeather.getJSONArray("list");
-                for (int i = 0; i < sevenDaysWeather.length(); i++) {
-                    JSONObject oneDayWeather = sevenDaysWeather.getJSONObject(i);
-                    int date = oneDayWeather.getInt("dt");
-                    JSONObject temperature = oneDayWeather.getJSONObject("temp");
-                    Double morningTemperature = temperature.getDouble("morn");
-                    Double dayTemperature = temperature.getDouble("day");
-                    Double eveningTemperature = temperature.getDouble("eve");
-                    Double nightTemperature = temperature.getDouble("night");
-                    Double pressure = oneDayWeather.getDouble("pressure");
-                    Integer humidity = oneDayWeather.getInt("humidity");
-                    Double windSpeed = oneDayWeather.getDouble("speed");
-                    JSONArray weatherWords = oneDayWeather.getJSONArray("weather");
-                    JSONObject weatherFirstObject = weatherWords.getJSONObject(0);
-                    String weatherDescription = weatherFirstObject.getString("description");
-                    String iconId = weatherFirstObject.getString("icon");
-                    JSONObject city = allWeather.getJSONObject("city");
-                    String cityName = city.getString("name");
-
-                    StringBuilder iconUrl = new StringBuilder();
-                    iconUrl.append("http://openweathermap.org/img/w/");
-                    iconUrl.append(iconId);
-                    iconUrl.append(".png");
-                    Bitmap icon = Utility.getBitmapFromURL(iconUrl.toString());
-
-                    Weather weather = new Weather(cityName, date, morningTemperature, dayTemperature, eveningTemperature, nightTemperature, pressure, humidity, windSpeed, weatherDescription, icon);
-                    weekWeather.add(weather);
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
             return weekWeather;
         }
 
@@ -214,7 +246,7 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
                 ListView listView = (ListView) findViewById(R.id.weather_list);
                 listView.setAdapter(weatherAdapter);
             } else {
-                Toast.makeText(context, "Couldn't load quakes data from openweathermap.org, check your internet connection and try again!", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Couldn't load weather data from Open Weather, check your internet connection and try again!", Toast.LENGTH_LONG).show();
             }
         }
     }

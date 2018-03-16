@@ -25,7 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.WeatherActivity" />
         <activity
             android:name=".activities.QuakeMapActivity"
             android:label="@string/title_activity_map"
@@ -47,8 +46,12 @@
             android:name=".activities.AboutUsActivity"
             android:label="@string/title_activity_about"
             android:screenOrientation="portrait" />
+        <activity android:name=".activities.WeatherActivity"
+            android:label="@string/title_activity_weather"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.WeatherDetailsActivity"
+            android:label="@string/title_activity_weather_details"
             android:screenOrientation="portrait" />
         <activity
             android:name=".settings.SettingsActivity"
@@ -68,9 +71,9 @@
             android:authorities="edu.itu.csc.quakenweather.error"></provider>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR-API-KEY" />
+            android:value="YOUR-GOOGLE-API-KEY" />
         <meta-data
             android:name="org.openweathermap.APP_ID"
-            android:value="YOUR-APP-ID" />
+            android:value="YOUR-WEATHER-API-KEY" />
     </application>
 </manifest>

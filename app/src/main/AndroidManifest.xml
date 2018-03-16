@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -24,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.WeatherActivity" />
         <activity
             android:name=".activities.QuakeMapActivity"
             android:label="@string/title_activity_map"
@@ -46,6 +48,9 @@
             android:label="@string/title_activity_about"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.WeatherDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.MainActivity"
@@ -54,6 +59,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.itu.csc.quakenweather.activities.MainActivity" />
         </activity>
+
         <provider
             android:name=".database.RegistrationProvider"
             android:authorities="edu.itu.csc.quakenweather.registration"></provider>
@@ -63,6 +69,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR-API-KEY" />
+        <meta-data
+            android:name="org.openweathermap.APP_ID"
+            android:value="YOUR-APP-ID" />
     </application>
-
 </manifest>

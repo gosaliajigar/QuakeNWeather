@@ -1,49 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:key="main_screen">
 
     <PreferenceCategory
         android:key="quake_filters"
-        android:title="QUAKE FILTERS" >
+        android:title="QUAKE FILTERS">
         <ListPreference
-            android:title="@string/preference_magnitude_label"
-            android:key="@string/preference_magnitude_key"
             android:defaultValue="@string/preference_magnitude_3.0"
+            android:entries="@array/preference_magnitude_options"
             android:entryValues="@array/preference_magnitude_values"
-            android:entries="@array/preference_magnitude_options" />
+            android:key="@string/preference_magnitude_key"
+            android:title="@string/preference_magnitude_label" />
         <ListPreference
-            android:title="@string/preference_duration_label"
-            android:key="@string/preference_duration_key"
             android:defaultValue="@string/preference_duration_last_24_hr"
+            android:entries="@array/preference_duration_options"
             android:entryValues="@array/preference_duration_values"
-            android:entries="@array/preference_duration_options" />
+            android:key="@string/preference_duration_key"
+            android:title="@string/preference_duration_label" />
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="data_customization"
-        android:title="DATA CUSTOMIZATION" >
+        android:title="DATA CUSTOMIZATION">
         <ListPreference
-            android:title="@string/preference_distance_label"
-            android:key="@string/preference_distance_key"
             android:defaultValue="@string/preference_distance_miles"
+            android:entries="@array/preference_distance_options"
             android:entryValues="@array/preference_distance_values"
-            android:entries="@array/preference_distance_options" />
+            android:key="@string/preference_distance_key"
+            android:title="@string/preference_distance_label" />
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="temperature_format"
+        android:title="TEMPERATURE FORMAT">
+        <ListPreference
+            android:defaultValue="@string/preference_temperature_fahrenheit"
+            android:entries="@array/preference_temperature_format_values"
+            android:entryValues="@array/preference_temperature_format_values"
+            android:key="@string/preference_temperature_key"
+            android:title="@string/temperature_units" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="debugging_data"
-        android:title="DEBUGGING DATA" >
+        android:title="DEBUGGING DATA">
         <CheckBoxPreference
-            android:title="@string/preference_device_information_label"
+            android:defaultValue="true"
             android:key="@string/preference_device_information_key"
             android:summary="Uncheck if you do not want to share data"
-            android:defaultValue="true"/>
+            android:title="@string/preference_device_information_label" />
         <CheckBoxPreference
-            android:title="@string/preference_error_information_label"
+            android:defaultValue="true"
             android:key="@string/preference_error_information_key"
             android:summary="Uncheck if you do not want to share data"
-            android:defaultValue="true"/>
+            android:title="@string/preference_error_information_label" />
     </PreferenceCategory>
 
 </PreferenceScreen>

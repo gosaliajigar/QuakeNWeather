@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "[Subject Here]");
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Try " + getString(R.string.app_name) + "!!");
             sharingIntent.putExtra(Intent.EXTRA_TEXT, "[Type your message here]");
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
         } else if (id == R.id.nav_feedback) {

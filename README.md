@@ -11,11 +11,16 @@ QuakeNWeather Android Application retrieves weather information from the free AP
 ## How to Use? ##
   1. Clone the repository and import the project in Android Studio
   2. Get your google api key by following steps on https://developers.google.com/maps/documentation/android-api/signup
-  3. Save your YOUR_API_KEY in AndroidManifest.xml under <br>
-		    **meta-data <br>
+  		* Save your YOUR-GOOGLE-API-KEY in AndroidManifest.xml under <br>
+		    	**meta-data <br>
 				android:name="com.google.android.geo.API_KEY" <br>
-				android:value="YOUR_API_KEY"** <br>
-  4. Save your YOUR_API_KEY in gradle.properties as GOOGLE_MAPS_API_KEY=YOUR_API_KEY
+				android:value="YOUR-GOOGLE-API-KEY"** <br>
+  		* Save your YOUR_API_KEY in gradle.properties as GOOGLE_MAPS_API_KEY=YOUR_API_KEY
+  3. Get your Open Weather API Key by signing up on https://openweathermap.org/api
+  		* Save your YOUR-WEATHER-API-KEY in AndroidManifest.xml under <br>
+		    	**meta-data <br>
+				android:name="org.openweathermap.APP_ID" <br>
+				android:value="YOUR-WEATHER-API-KEY"** <br>
 
 
 

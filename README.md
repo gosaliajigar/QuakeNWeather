@@ -185,7 +185,7 @@ Weather icons are fetched from Open Weather API documented on https://openweathe
 | ------------- | ------------- |
 | Navigation Drawer | <img src="https://user-images.githubusercontent.com/5839686/37933920-968f6148-3101-11e8-95eb-40efa866a456.png" width="150"> |
 | MainActivity | <img src="https://user-images.githubusercontent.com/5839686/37933932-9fc7a662-3101-11e8-8b40-c0d51e5f9280.png" width="150"> |
-| QuakeMapActivity | <img src="https://user-images.githubusercontent.com/5839686/37933935-a00d82fe-3101-11e8-8b78-2f4a2ef413a1.png" width="150"> <img src="" width="150"> |
+| QuakeMapActivity | <img src="https://user-images.githubusercontent.com/5839686/37933935-a00d82fe-3101-11e8-8b78-2f4a2ef413a1.png" width="150"> |
 | QuakeStatisticsActivity | <img src="https://user-images.githubusercontent.com/5839686/37933937-a06417cc-3101-11e8-9258-06ca036b34a2.png" width="150"> |
 | QuakeDetailsActivity | <img src="https://user-images.githubusercontent.com/5839686/37933936-a02ed774-3101-11e8-84cf-e4551e4b3954.png" width="150"> <img src="https://user-images.githubusercontent.com/5839686/37933933-9fddf0ac-3101-11e8-8764-7f5cc3b0b683.png" width="150" > |
 | QuakeSearchActivity | <img src="https://user-images.githubusercontent.com/5839686/37933938-a0976d66-3101-11e8-8700-8c183b153115.png" width="150"> |

@@ -105,7 +105,10 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        Utility.addErrorEntry(this, new Exception("DEMO PURPOSE ERROR"));
+        // TODO : Delete this in real implementation
+        // Below is just for demo purpose to show how bad user experiences,
+        // which are captured in DB, will be shared to developer for debugging
+        // Utility.addErrorEntry(this, new Exception("DEMO PURPOSE ERROR"));
     }
 
     @Override

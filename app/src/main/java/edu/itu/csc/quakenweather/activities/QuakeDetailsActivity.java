@@ -9,9 +9,11 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.itu.csc.quakenweather.R;
 import edu.itu.csc.quakenweather.utilities.Utility;
@@ -71,10 +73,18 @@ public class QuakeDetailsActivity extends AppCompatActivity {
         weatherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
-                intent.putExtra("longitude",longitude);
-                intent.putExtra("latitude",latitude);
-                getApplicationContext().startActivity(intent);
+                try {
+                    Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
+                    intent.putExtra("longitude",longitude);
+                    intent.putExtra("latitude",latitude);
+                    startActivity(intent);
+                } catch (Exception exception) {
+                    Log.e(MainActivity.APP_TAG, "QuakeDetailsMapActivity: onCreate: " + exception.toString());
+                    Utility.addErrorEntry(getApplicationContext(), exception);
+                    exception.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Try again or report error in feedback!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

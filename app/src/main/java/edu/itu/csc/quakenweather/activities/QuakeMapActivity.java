@@ -238,10 +238,17 @@ public class QuakeMapActivity extends AppCompatActivity {
                     weatherButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(context, WeatherActivity.class);
-                            intent.putExtra("longitude",longitude);
-                            intent.putExtra("latitude",latitude);
-                            context.startActivity(intent);
+                            try {
+                                Intent intent = new Intent(context, WeatherActivity.class);
+                                intent.putExtra("longitude",longitude);
+                                intent.putExtra("latitude",latitude);
+                                context.startActivity(intent);
+                            } catch (Exception exception) {
+                                Log.e(MainActivity.APP_TAG, "QuakeMapActivity: handleOnClickInfoWindowEvent: " + exception.toString());
+                                Utility.addErrorEntry(context, exception);
+                                exception.printStackTrace();
+                                Toast.makeText(context, "Try again or report error in feedback!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
 

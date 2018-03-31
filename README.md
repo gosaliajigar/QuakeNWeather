@@ -146,8 +146,8 @@ User of android application can decide whether he/she would like to share the er
 
 | Database | ScreenShot |
 | ------------- | ------------- |
-| Registration | <img src="https://user-images.githubusercontent.com/5839686/37933945-a186922e-3101-11e8-8530-1a4c3b478cd8.png" width="550" height="70" > |
-| Error | <img src="https://user-images.githubusercontent.com/5839686/37933943-a1203cae-3101-11e8-9786-2290c3ddf5f2.png" width="500" height="90" > |
+| Registration | <img src="https://user-images.githubusercontent.com/5839686/37933945-a186922e-3101-11e8-8530-1a4c3b478cd8.png" width="600" height="70" > |
+| Error | <img src="https://user-images.githubusercontent.com/5839686/37933943-a1203cae-3101-11e8-9786-2290c3ddf5f2.png" width="600" height="90" > |
 
 
 **NOTE**: Installed date is captured when the app is opened for the first time and not actual installation date.

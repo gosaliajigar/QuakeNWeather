@@ -122,6 +122,8 @@ QuakeNWeather has total 9 screens (views/activities) ...
 
 Here is how the code is organized in respective packages.
 
+<img src="https://user-images.githubusercontent.com/5839686/37933944-a1595476-3101-11e8-8d6c-701230accbbf.png" width="150">
+
 
 ### Database ###
 
@@ -137,8 +139,8 @@ User of android application can decide whether he/she would like to share the er
 
 | Database | ScreenShot |
 | ------------- | ------------- |
-| Registration | <img src="" width="150"> |
-| Error | <img src="" width="150"> |
+| Registration | <img src="https://user-images.githubusercontent.com/5839686/37933945-a186922e-3101-11e8-8530-1a4c3b478cd8.png" width="550" height="50" > |
+| Error | <img src="https://user-images.githubusercontent.com/5839686/37933943-a1203cae-3101-11e8-9786-2290c3ddf5f2.png" width="550" height="50" > |
 
 
 **NOTE**: Installed date is captured when the app is opened for the first time and not actual installation date.
@@ -174,16 +176,17 @@ Weather icons are fetched from Open Weather API documented on https://openweathe
 
 | Screen | ScreenShot |
 | ------------- | ------------- |
-| Navigation Drawer | <img src="" width="150"> |
-| MainActivity | <img src="" width="150"> |
-| QuakeMapActivity | <img src="" width="150"> <img src="" width="150"> <img src="" width="150"> |
-| QuakeStatisticsActivity | <img src="" width="150"> <img src="" width="150"> |
-| QuakeDetailsActivity | <img src="" width="150"> <img src="" width="150"> |
-| QuakeSearchActivity | <img src="" width="150"> <img src="" width="150"> |
-| WeatherActivity | <img src="" width="150"> <img src="" width="150"> |
-| WeatherDetailsActivity | <img src="" width="150"> <img src="" width="150"> |
-| SettingsActivity | <img src="" width="150"> <img src="" width="150"> |
-| AboutUsActivity | <img src="" width="150"> |
+| Navigation Drawer | <img src="https://user-images.githubusercontent.com/5839686/37933920-968f6148-3101-11e8-95eb-40efa866a456.png" width="150"> |
+| MainActivity | <img src="https://user-images.githubusercontent.com/5839686/37933932-9fc7a662-3101-11e8-8b40-c0d51e5f9280.png" width="150"> |
+| QuakeMapActivity | <img src="https://user-images.githubusercontent.com/5839686/37933935-a00d82fe-3101-11e8-8b78-2f4a2ef413a1.png" width="150"> <img src="" width="150"> |
+| QuakeStatisticsActivity | <img src="https://user-images.githubusercontent.com/5839686/37933937-a06417cc-3101-11e8-9258-06ca036b34a2.png" width="150"> |
+| QuakeDetailsActivity | <img src="https://user-images.githubusercontent.com/5839686/37933936-a02ed774-3101-11e8-84cf-e4551e4b3954.png" width="150"> <img src="https://user-images.githubusercontent.com/5839686/37933933-9fddf0ac-3101-11e8-8764-7f5cc3b0b683.png" width="150" > |
+| QuakeSearchActivity | <img src="https://user-images.githubusercontent.com/5839686/37933938-a0976d66-3101-11e8-8700-8c183b153115.png" width="150"> |
+| USGS Details | <img src="https://user-images.githubusercontent.com/5839686/37933934-9ff62fb4-3101-11e8-9a21-9f940fa5137f.png" width="150"> |
+| WeatherActivity | <img src="https://user-images.githubusercontent.com/5839686/37933939-a0d8eafc-3101-11e8-8679-50c7ed553aa4.png" width="150"> |
+| WeatherDetailsActivity | <img src="https://user-images.githubusercontent.com/5839686/37933941-a0f13814-3101-11e8-8b39-c747fec9e64d.png" width="150"> |
+| SettingsActivity | <img src="https://user-images.githubusercontent.com/5839686/37933942-a10a2892-3101-11e8-9050-9a5f6ef7f598.png" width="150"> |
+| AboutUsActivity | <img src="https://user-images.githubusercontent.com/5839686/37933928-9f7825ce-3101-11e8-8b17-973988a5dc82.png" width="150"> |
 
 
 ## Credits ##

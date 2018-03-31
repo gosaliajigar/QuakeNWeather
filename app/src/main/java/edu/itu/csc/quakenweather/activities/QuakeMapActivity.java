@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -108,12 +109,12 @@ public class QuakeMapActivity extends AppCompatActivity {
         private GoogleMap googleMap;
         private List<Quake> mResult;
         private ProgressDialog dialog;
-        private Map<String, Quake> earthQuakeInfoMap;
+        private Map<String, Quake> quakeInfoMap;
 
         public FetchQuakeMapDataTask(Context context, MapView mMapView) {
             this.context = context;
             this.mMapView = mMapView;
-            earthQuakeInfoMap = new HashMap<String, Quake>();
+            quakeInfoMap = new HashMap<String, Quake>();
         }
 
         @Override
@@ -162,9 +163,9 @@ public class QuakeMapActivity extends AppCompatActivity {
                         });
 
                         if (mResult != null && mResult.size() > 0) {
-                            earthQuakeInfoMap.clear();
+                            quakeInfoMap.clear();
                             for (Quake earthquakeInfo : mResult) {
-                                earthQuakeInfoMap.put(earthquakeInfo.getTitle(), earthquakeInfo);
+                                quakeInfoMap.put(earthquakeInfo.getTitle(), earthquakeInfo);
                                 try {
                                     long timestamp = Long.parseLong(earthquakeInfo.getTime());
                                     Marker marker = googleMap.addMarker(new MarkerOptions()
@@ -192,43 +193,57 @@ public class QuakeMapActivity extends AppCompatActivity {
          * @param marker
          * @param context
          */
-        public void handleOnClickInfoWindowEvent(Marker marker, Context context) {
-            if (earthQuakeInfoMap != null && earthQuakeInfoMap.size() > 0) {
-                Quake earthQuakeInfo = earthQuakeInfoMap.get(marker.getTitle());
-                if (earthQuakeInfo != null) {
+        public void handleOnClickInfoWindowEvent(Marker marker, final Context context) {
+            if (quakeInfoMap != null && quakeInfoMap.size() > 0) {
+                Quake quakeInfo = quakeInfoMap.get(marker.getTitle());
+                if (quakeInfo != null) {
                     LayoutInflater inflater = LayoutInflater.from(context);
                     final View detailedView = inflater.inflate(R.layout.activity_quake_details, null);
 
                     TextView title = (TextView) detailedView.findViewById(R.id.title_data);
-                    title.setText(earthQuakeInfo.getTitle());
+                    title.setText(quakeInfo.getTitle());
 
                     TextView location = (TextView) detailedView.findViewById(R.id.location_data);
-                    location.setText(earthQuakeInfo.getFormattedPlace());
+                    location.setText(quakeInfo.getFormattedPlace());
 
                     TextView coordinates = (TextView) detailedView.findViewById(R.id.coordinates_data);
-                    coordinates.setText(earthQuakeInfo.getFormattedCoordinates());
+                    coordinates.setText(quakeInfo.getFormattedCoordinates());
 
                     TextView time = (TextView) detailedView.findViewById(R.id.time_data);
-                    time.setText(earthQuakeInfo.getFormattedTime());
+                    time.setText(quakeInfo.getFormattedTime());
 
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                     String distance = prefs.getString("distance", null);
                     TextView depth = (TextView) detailedView.findViewById(R.id.depth_data);
-                    depth.setText(Utility.getFormattedDepth(Utility.getConvertedDepth(earthQuakeInfo.getDepth(), distance), distance));
+                    depth.setText(Utility.getFormattedDepth(Utility.getConvertedDepth(quakeInfo.getDepth(), distance), distance));
 
                     TextView eventId = (TextView) detailedView.findViewById(R.id.event_id_data);
-                    eventId.setText(earthQuakeInfo.getEventId());
+                    eventId.setText(quakeInfo.getEventId());
 
                     TextView significance = (TextView) detailedView.findViewById(R.id.significance_data);
-                    significance.setText(earthQuakeInfo.getSignificance());
+                    significance.setText(quakeInfo.getSignificance());
 
                     TextView status = (TextView) detailedView.findViewById(R.id.review_status_data);
-                    status.setText(earthQuakeInfo.getStatus());
+                    status.setText(quakeInfo.getStatus());
 
                     TextView urlLinkData = (TextView) detailedView.findViewById(R.id.url_link_data);
                     urlLinkData.setVisibility(View.GONE);
                     TextView urlLinkText = (TextView) detailedView.findViewById(R.id.url_link_text);
                     urlLinkText.setVisibility(View.GONE);
+
+                    final double longitude = quakeInfo.getLongitude();
+                    final double latitude = quakeInfo.getLatitude();
+
+                    Button weatherButton = (Button) detailedView.findViewById(R.id.weatherButton);
+                    weatherButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(context, WeatherActivity.class);
+                            intent.putExtra("longitude",longitude);
+                            intent.putExtra("latitude",latitude);
+                            context.startActivity(intent);
+                        }
+                    });
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     final View titleView = inflater.inflate(R.layout.activity_title, null);

@@ -27,7 +27,7 @@ QuakeNWeather Android Application retrieves weather information from the free AP
 
 ### Activities ###
 
-QuakeNWeather has total 9 screens (views/activities) ...
+QuakeNWeather has total 10 screens (views/activities) ...
 
   1. **MainActivity (Quakes)** :
       - Displays the latest quakes information as per filters defined in settings page
@@ -69,14 +69,14 @@ QuakeNWeather has total 9 screens (views/activities) ...
 	  - User can also refresh the data by click on refresh button in tool bar
 	  - Depending on the magnitude of the quake, the quake marker is color-coded
 	  - User can click on individual quake info window to get detailed information about the quake
-      - From this screen user can only go back to Latest Earthquakes (MainActivity)
+      - From this screen user can only go back to Latest Quakes (MainActivity)
       - From this screen user can go to ...
-		  - Earthquake Details
+		  - Quake Details
 		  - Settings
 
   6. **SettingsActivity (Settings)** :
       - Displays the following user settings
-	      - EARTHQUAKE FILTERS
+	      - QUAKE FILTERS
 		      - Default Magnitude Filter
 			      - 1.0+
 				  - 2.0+
@@ -97,32 +97,39 @@ QuakeNWeather has total 9 screens (views/activities) ...
 		  - DATA CUSTOMIZATION
 		      - Distance Units
 			      - Miles
-				  - Kilometers
+			      - Kilometers
+		  - TEMPERATURE FORMAT
+		      - Temperature Units
+			      - Celsius
+			      - Fahrenheit
+		  - DEBUGGING DATA
+		      - Device Information
+		      - Error Information
       - From this screen user can go to the screen from where settings was selected.
 	  - Settings are available on following pages ...
-	      - Latest Earthquakes
-		  - View Earthquakes
-		  - Earthquake Statistics
+	      - Latest Quakes
+		  - View Quakes
+		  - Quakes Statistics
 		  - Search City
 
   7. **WeatherActivity (Weather)** :
       - Displays information about author and android application
-      - From this screen user can only go back to Latest Earthquakes (MainActivity)
+      - From this screen user can only go back to Latest Quakes (MainActivity)
 
   7. **WeatherDetailsActivity (Weather Details)** :
       - Displays information about author and android application
-      - From this screen user can only go back to Latest Earthquakes (MainActivity)
+      - From this screen user can only go back to Latest Quakes (MainActivity)
 
   7. **AboutUsActivity (About Authors and Application)** :
       - Displays information about author and android application
-      - From this screen user can only go back to Latest Earthquakes (MainActivity)
+      - From this screen user can only go back to Latest Quakes (MainActivity)
 
 
 ### Package Explorer ###
 
 Here is how the code is organized in respective packages.
 
-<img src="https://user-images.githubusercontent.com/5839686/37933944-a1595476-3101-11e8-8d6c-701230accbbf.png" width="150">
+<img src="https://user-images.githubusercontent.com/5839686/37933944-a1595476-3101-11e8-8d6c-701230accbbf.png" width="250" height="500">
 
 
 ### Database ###
@@ -139,8 +146,8 @@ User of android application can decide whether he/she would like to share the er
 
 | Database | ScreenShot |
 | ------------- | ------------- |
-| Registration | <img src="https://user-images.githubusercontent.com/5839686/37933945-a186922e-3101-11e8-8530-1a4c3b478cd8.png" width="550" height="50" > |
-| Error | <img src="https://user-images.githubusercontent.com/5839686/37933943-a1203cae-3101-11e8-9786-2290c3ddf5f2.png" width="550" height="50" > |
+| Registration | <img src="https://user-images.githubusercontent.com/5839686/37933945-a186922e-3101-11e8-8530-1a4c3b478cd8.png" width="550" height="70" > |
+| Error | <img src="https://user-images.githubusercontent.com/5839686/37933943-a1203cae-3101-11e8-9786-2290c3ddf5f2.png" width="500" height="90" > |
 
 
 **NOTE**: Installed date is captured when the app is opened for the first time and not actual installation date.

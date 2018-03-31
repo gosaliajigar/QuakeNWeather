@@ -94,7 +94,7 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_macro, menu);
+        getMenuInflater().inflate(R.menu.menu_mini, menu);
         return true;
     }
 
@@ -105,6 +105,9 @@ public class WeatherActivity extends AppCompatActivity implements ActivityCompat
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
+            case R.id.action_refresh:
+                new LoadWeeklyWeatherForecast(this).execute();
+                break;
             case R.id.action_settings:
                 startActivity(new Intent(WeatherActivity.this, SettingsActivity.class));
                 break;

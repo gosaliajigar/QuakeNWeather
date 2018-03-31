@@ -294,10 +294,12 @@ public class Utility {
      */
     public static void addErrorEntry(Context context, Exception exception) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ErrorProvider.ERROR_DETAILS , Log.getStackTraceString(exception));
+        String exceptionName = (exception != null ? exception.toString() : "No Exception Details");
+        String exceptionDetails = Log.getStackTraceString(exception);
+        contentValues.put(ErrorProvider.ERROR_DETAILS , (exceptionDetails != null && exceptionDetails.length() > 0) ? exceptionDetails : exceptionName);
         contentValues.put(ErrorProvider.LAST_DATE , String.valueOf(new Date().getTime()));
         Uri uri = context.getContentResolver().insert(ErrorProvider.CONTENT_URI, contentValues);
-        Log.d(MainActivity.APP_TAG, "Utility: Added error uri: " + uri.toString());
+        Log.d(MainActivity.APP_TAG, "Utility: Added error uri: " + uri.toString() + " ;exception: " + contentValues.get(ErrorProvider.ERROR_DETAILS));
     }
 
     /**
@@ -483,6 +485,8 @@ public class Utility {
                     } else {
                         errorDetails.append(dateTime + " || " + error.getValue() + "\n");
                     }
+                } else {
+                    break;
                 }
                 count++;
             }

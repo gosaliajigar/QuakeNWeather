@@ -41,6 +41,7 @@
             android:key="@string/preference_temperature_key"
             android:title="@string/temperature_units" />
     </PreferenceCategory>
+
     <PreferenceCategory
         android:key="debugging_data"
         android:title="DEBUGGING DATA">

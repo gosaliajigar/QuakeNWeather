@@ -178,6 +178,10 @@ MainActivity, QuakeStatisticsActivity and QuakeSearchActivity have smart footer,
 
 Weather icons are fetched from Open Weather API documented on https://openweathermap.org/weather-conditions as per weather conditions.
 
+### Trie Data Structure Smart Search ###
+
+<img src="https://user-images.githubusercontent.com/5839686/45557453-7d7b4780-b7f2-11e8-8e27-7f3713b4c0a3.png">
+
 
 ## Screenshots ##
 
